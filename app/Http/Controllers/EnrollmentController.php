@@ -12,7 +12,7 @@ class EnrollmentController extends Controller
     public function index()
     {
         $enrollments = Enrollment::with(['student', 'course'])->get();
-        return view('enrollments.index', compact('enrollments'));
+        return view('enrollments.Enroll', compact('enrollments'));
     }
 
     public function create()

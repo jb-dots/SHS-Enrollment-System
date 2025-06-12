@@ -10,7 +10,7 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
-        return view('courses.index', compact('courses'));
+        return view('courses.Course', compact('courses'));
     }
 
     public function create()
