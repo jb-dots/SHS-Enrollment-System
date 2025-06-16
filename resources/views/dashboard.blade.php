@@ -49,6 +49,19 @@
     </style>
 </head>
 <body>
+    <header style="background: rgba(0, 0, 0, 0.6); padding: 1rem 3rem; text-align: right;">
+        @guest
+            <a href="{{ route('login') }}" style="color: #fff; margin-right: 1.5rem; font-weight: bold; text-decoration: none;">Login</a>
+            <a href="{{ route('register') }}" style="color: #fff; font-weight: bold; text-decoration: none;">Register</a>
+        @endguest
+        @auth
+            <a href="{{ route('profile.edit') }}" style="color: #fff; margin-right: 1.5rem; font-weight: bold; text-decoration: none;">Profile</a>
+            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                @csrf
+                <button type="submit" style="color: #fff; font-weight: bold; background: none; border: none; cursor: pointer; padding: 0;">Logout</button>
+            </form>
+        @endauth
+    </header>
     <div class="container">
         <h1>Welcome to the Senior Highschool Enrollment System</h1>
         <p>Enroll and register for your desired courses easily and securely.</p>
