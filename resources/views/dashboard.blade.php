@@ -46,6 +46,12 @@
         .btn:hover {
             background-color: #d87e04;
         }
+        .btn-admin {
+            background-color: #e74c3c;
+        }
+        .btn-admin:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 <body>
