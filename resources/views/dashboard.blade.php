@@ -71,9 +71,8 @@
     <div class="container">
         <h1>Welcome to the Senior Highschool Enrollment System</h1>
         <p>Enroll and register for your desired courses easily and securely.</p>
-        <a href="{{ route('register') }}" class="btn">Register an Account</a>
-        <a href="{{ route('students.index') }}" class="btn">View Students</a>
-        <a href="{{ route('courses.index') }}" class="btn">View Courses</a>
+        <a href="{{ route('tracks.index') }}" class="btn">View Tracks</a>
+        <a href="{{ route('strands.index') }}" class="btn">View Strands</a>
         <a href="{{ route('enrollments.index') }}" class="btn">View Enrollments</a>
     </div>
 </body>

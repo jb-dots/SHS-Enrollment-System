@@ -8,13 +8,11 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Middleware\AdminMiddleware;
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+use App\Http\Controllers\DashboardController;
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/', [DashboardController::class, 'index']);
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -24,6 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('students', StudentController::class);
     Route::resource('courses', CourseController::class);
     Route::resource('enrollments', EnrollmentController::class);
+
+    Route::get('/tracks', [App\Http\Controllers\TracksController::class, 'index'])->name('tracks.index');
+    Route::get('/strands', [App\Http\Controllers\StrandsController::class, 'index'])->name('strands.index');
 });
 
 Route::middleware([AdminMiddleware::class])->group(function () {

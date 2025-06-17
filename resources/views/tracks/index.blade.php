@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Students - Senior Highschool Enrollment System</title>
+    <title>Tracks - Senior Highschool Enrollment System</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,6 +27,7 @@
             border: 1px solid #ddd;
             text-align: left;
             color: black;
+            vertical-align: top;
         }
         th {
             background-color: #1DB954;
@@ -44,58 +45,64 @@
         a.button:hover {
             background-color: #17a44c;
         }
-        .actions a {
-            margin-right: 10px;
-            color: #1DB954;
-            text-decoration: none;
-        }
-        .actions a:hover {
-            text-decoration: underline;
-        }
         button {
             background: none;
             border: none;
             color: #e74c3c;
             cursor: pointer;
-            padding: 0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        button.edit {
+            background-color: #fbbf24;
+            color: black;
+        }
+        button.edit:hover {
+            background-color: #d1a10a;
+        }
+        button.delete {
+            background-color: #f87171;
+            color: white;
+        }
+        button.delete:hover {
+            background-color: #c53030;
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Students</h1>
-    <a href="{{ route('dashboard') }}" class="button" style="background-color: #1DB954; margin-right: 10px;">Return to Dashboard</a>
-    <a href="{{ route('students.create') }}" class="button">Add Student</a>
-    @if(session('success'))
-        <p style="color: white;">{{ session('success') }}</p>
-    @endif
+    <h1>Tracks</h1>
+    <a href="{{ route('dashboard') }}" class="button">Return to Dashboard</a>
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
+                <th>Strands</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($students as $student)
+            @foreach($tracks as $track)
             <tr>
-                <td>{{ $student->id }}</td>
-                <td>{{ $student->first_name }} {{ $student->last_name }}</td>
-                <td>{{ $student->email }}</td>
-                <td>{{ $student->phone }}</td>
-                <td class="actions">
-                    <a href="{{ route('students.show', $student) }}">View</a>
-                    <a href="{{ route('students.edit', $student) }}">Edit</a>
-                    <form action="{{ route('students.destroy', $student) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
+                <td>{{ $track['name'] }}</td>
+                <td>
+                    <ul>
+                        @foreach($track['strands'] as $strand)
+                        <li>{{ $strand }}</li>
+                        @endforeach
+                    </ul>
+                </td>
+                <td>
+                    <button class="edit">Edit</button>
+                    <button class="delete">Delete</button>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 </body>
+</html>
