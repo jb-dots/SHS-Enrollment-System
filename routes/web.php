@@ -19,9 +19,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('students', StudentController::class);
-    Route::resource('courses', CourseController::class);
     Route::resource('enrollments', EnrollmentController::class);
+    Route::post('/enrollments/{enrollment}/approve', [App\Http\Controllers\EnrollmentController::class, 'approve'])->name('enrollments.approve');
+    Route::post('/enrollments/{enrollment}/reject', [App\Http\Controllers\EnrollmentController::class, 'reject'])->name('enrollments.reject');
 
     Route::get('/tracks', [App\Http\Controllers\TracksController::class, 'index'])->name('tracks.index');
     Route::get('/strands', [App\Http\Controllers\StrandsController::class, 'index'])->name('strands.index');

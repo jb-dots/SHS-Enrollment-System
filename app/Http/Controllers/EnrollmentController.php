@@ -67,4 +67,16 @@ class EnrollmentController extends Controller
 
         return redirect()->route('enrollments.index')->with('success', 'Enrollment deleted successfully.');
     }
+
+    public function approve(Enrollment $enrollment)
+    {
+        $enrollment->update(['status' => 'approved']);
+        return redirect()->route('enrollments.index')->with('success', 'Enrollment approved successfully.');
+    }
+
+    public function reject(Enrollment $enrollment)
+    {
+        $enrollment->update(['status' => 'rejected']);
+        return redirect()->route('enrollments.index')->with('success', 'Enrollment rejected successfully.');
+    }
 }
