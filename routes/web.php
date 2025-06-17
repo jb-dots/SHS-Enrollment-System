@@ -10,7 +10,7 @@ use App\Http\Middleware\AdminMiddleware;
 
 use App\Http\Controllers\DashboardController;
 
-Route::get('/', [DashboardController::class, 'index']);
+Route::view('/', 'welcome');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
