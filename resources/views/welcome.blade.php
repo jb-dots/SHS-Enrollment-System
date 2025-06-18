@@ -71,9 +71,9 @@
             justify-content: center;
         }
         .logo {
-            width: 120px;
-            margin-bottom: 1.5rem;
-            filter: brightness(0) invert(1);
+            width: 240px;
+            margin-bottom: -1rem;
+            margin-top: -5rem;
         }
         .portal-title {
             font-size: 1.8rem;
@@ -169,7 +169,7 @@
                 If you want to register press "Click Here" to register.</p>
         </div>
         <div class="right-panel">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/120px-Laravel.svg.png" alt="Laravel Logo" class="logo" />
+            <img src="https://i.postimg.cc/PJ0xyRwD/asd-removebg-preview-1.png/400px-asd-removebg-preview-1.png" alt="Laravel Logo" class="logo" />
             <div class="campus-name">Main Campus</div>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
