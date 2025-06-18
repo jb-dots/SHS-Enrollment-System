@@ -22,13 +22,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('enrollments', EnrollmentController::class);
     Route::post('/enrollments/{enrollment}/approve', [App\Http\Controllers\EnrollmentController::class, 'approve'])->name('enrollments.approve');
     Route::post('/enrollments/{enrollment}/reject', [App\Http\Controllers\EnrollmentController::class, 'reject'])->name('enrollments.reject');
-
-    Route::get('/tracks', [App\Http\Controllers\TracksController::class, 'index'])->name('tracks.index');
-    Route::get('/strands', [App\Http\Controllers\StrandsController::class, 'index'])->name('strands.index');
 });
 
 Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+    Route::resource('tracks', App\Http\Controllers\TracksController::class);
+    Route::resource('strands', App\Http\Controllers\StrandsController::class);
 });
 
 require __DIR__.'/auth.php';
