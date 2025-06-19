@@ -30,7 +30,11 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) {
+                if (str_word_count($value) < 2) {
+                    $fail('The '.$attribute.' must contain at least first name and last name.');
+                }
+            }],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'user_type' => ['required', 'array'],
@@ -44,8 +48,22 @@ class RegisteredUserController extends Controller
         ]);
 
         if (in_array('student', $request->user_type)) {
+            // Parse full name into first, middle, last names
+            $nameParts = explode(' ', $request->name);
+            if (count($nameParts) == 1) {
+                $firstName = $nameParts[0];
+                $lastName = '';
+                $middleName = null;
+            } else {
+                $firstName = $nameParts[0];
+                $lastName = $nameParts[count($nameParts) - 1];
+                $middleName = count($nameParts) > 2 ? implode(' ', array_slice($nameParts, 1, -1)) : null;
+            }
+
             \App\Models\Student::create([
-                'name' => $request->name,
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'middle_name' => $middleName,
                 'email' => $request->email,
                 // Add other student-specific fields if needed
             ]);

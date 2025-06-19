@@ -114,8 +114,16 @@
             <tbody>
                 @foreach ($students as $student)
                 <tr>
-                    <td>{{ $student->name ?? 'N/A' }}</td>
-                    <td>{{ $student->email ?? 'N/A' }}</td>
+                <td>
+                    {{
+                        trim(
+                            $student->first_name . ' ' .
+                            ($student->middle_name ? $student->middle_name . ' ' : '') .
+                            $student->last_name
+                        ) ?: 'N/A'
+                    }}
+                </td>
+                <td>{{ $student->email ?? 'N/A' }}</td>
                 </tr>
                 @endforeach
             </tbody>

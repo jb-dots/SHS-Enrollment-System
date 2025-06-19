@@ -10,9 +10,13 @@ class Student extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'middle_name',
         'email',
-        // Add other student-specific fields here
+        'phone',
+        'birthdate',
+        'address',
     ];
 
     protected $table = 'students';

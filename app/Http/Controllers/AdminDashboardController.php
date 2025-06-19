@@ -82,7 +82,11 @@ class AdminDashboardController extends Controller
     public function manageUsers()
     {
         $students = Student::all();
-        $teachers = User::where('is_admin', false)->get();
+        $studentEmails = $students->pluck('email')->toArray();
+
+        $teachers = User::where('is_admin', false)
+            ->whereNotIn('email', $studentEmails)
+            ->get();
 
         return view('admin.manage-users', compact('students', 'teachers'));
     }
