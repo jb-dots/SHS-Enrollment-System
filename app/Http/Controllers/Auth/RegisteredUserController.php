@@ -33,6 +33,8 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'user_type' => ['required', 'array'],
+            'user_type.*' => ['in:student,instructor'],
         ]);
 
         $user = User::create([
@@ -41,10 +43,18 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        if (in_array('student', $request->user_type)) {
+            \App\Models\Student::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                // Add other student-specific fields if needed
+            ]);
+        }
+
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('dashboard'));
     }
 }

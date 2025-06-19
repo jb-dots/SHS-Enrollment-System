@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/manage-users', [AdminDashboardController::class, 'manageUsers'])->name('admin.manage-users');
 
     Route::resource('tracks', App\Http\Controllers\TracksController::class);
     Route::resource('strands', App\Http\Controllers\StrandsController::class);

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <title>Manage Users - Admin Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,7 +39,7 @@
             padding: 10px;
             border-radius: 4px;
         }
-        aside ul li a:hover {
+        aside ul li a.active, aside ul li a:hover {
             background-color: #374151;
         }
         main {
@@ -49,38 +49,7 @@
         }
         h1 {
             font-size: 2em;
-            margin-bottom: 10px;
-        }
-        .welcome {
-            margin-bottom: 30px;
-            font-size: 1.1em;
-            color: #4b5563;
-        }
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            flex: 1 1 200px;
-        }
-        .card h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.1em;
-            color: #374151;
-        }
-        .card p {
-            font-size: 1.8em;
-            margin: 0;
-            color: #111827;
-        }
-        .card .pending {
-            color: #dc2626;
+            margin-bottom: 20px;
         }
         table {
             width: 100%;
@@ -89,6 +58,7 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
         }
         thead {
             background-color: #f9fafb;
@@ -114,11 +84,12 @@
         <h2>Admin Dashboard</h2>
         <ul>
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ route('admin.manage-users') }}">Manage Users</a></li>
+            <li><a href="{{ route('admin.manage-users') }}" class="active">Manage Users</a></li>
             <li><a href="#">Manage Tracks</a></li>
             <li><a href="#">Manage Requirements</a></li>
             <li><a href="#">Manage Subjects</a></li>
-            <li><a href="{{ route('logout') }}"
+            <li>
+                <a href="{{ route('logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                    Logout
                 </a>
@@ -129,49 +100,43 @@
         </ul>
     </aside>
     <main>
-        <h1>Admin Dashboard</h1>
-        <p class="welcome">Welcome, Admin User!</p>
+        <h1>Manage Users</h1>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Total Users</h3>
-                <p><?php echo e($totalUsers); ?></p>
-            </div>
-            <div class="card">
-                <h3>Total Tracks</h3>
-                <p><?php echo e($totalTracks); ?></p>
-            </div>
-            <div class="card">
-                <h3>Total Strands</h3>
-                <p><?php echo e($totalStrands); ?></p>
-            </div>
-            <div class="card">
-                <h3>Total Subjects</h3>
-                <p><?php echo e($totalSubjects); ?></p>
-            </div>
-            <div class="card">
-                <h3>Pending Requirements</h3>
-                <p class="pending"><?php echo e($pendingRequirements); ?></p>
-            </div>
-        </div>
-
-        <h2>Students per Strand</h2>
+        <h2>Students</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Strand</th>
-                    <th>Track</th>
-                    <th>Students</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <!-- Add other student fields if needed -->
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($studentsPerStrand as $strand): ?>
+                @foreach ($students as $student)
                 <tr>
-                    <td><?php echo e($strand['strand']); ?></td>
-                    <td><?php echo e($strand['track']); ?></td>
-                    <td><?php echo e($strand['students']); ?></td>
+                    <td>{{ $student->name ?? 'N/A' }}</td>
+                    <td>{{ $student->email ?? 'N/A' }}</td>
                 </tr>
-                <?php endforeach; ?>
+                @endforeach
+            </tbody>
+        </table>
+
+        <h2>Teachers / Instructors</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <!-- Add other teacher fields if needed -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($teachers as $teacher)
+                <tr>
+                    <td>{{ $teacher->name }}</td>
+                    <td>{{ $teacher->email }}</td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
     </main>

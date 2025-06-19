@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Enrollment;
+use App\Models\Student;
 
 class AdminDashboardController extends Controller
 {
@@ -76,5 +77,13 @@ class AdminDashboardController extends Controller
             'pendingRequirements',
             'studentsPerStrand'
         ));
+    }
+
+    public function manageUsers()
+    {
+        $students = Student::all();
+        $teachers = User::where('is_admin', false)->get();
+
+        return view('admin.manage-users', compact('students', 'teachers'));
     }
 }
