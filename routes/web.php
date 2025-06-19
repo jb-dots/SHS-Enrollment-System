@@ -24,12 +24,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/enrollments/{enrollment}/reject', [App\Http\Controllers\EnrollmentController::class, 'reject'])->name('enrollments.reject');
 });
 
-Route::middleware([AdminMiddleware::class])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/manage-users', [AdminDashboardController::class, 'manageUsers'])->name('admin.manage-users');
+    Route::middleware([AdminMiddleware::class])->group(function () {
+        Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/admin/manage-users', [AdminDashboardController::class, 'manageUsers'])->name('admin.manage-users');
+        Route::get('/admin/manage-tracks', [AdminDashboardController::class, 'manageTracks'])->name('admin.manage-tracks');
 
-    Route::resource('tracks', App\Http\Controllers\TracksController::class);
-    Route::resource('strands', App\Http\Controllers\StrandsController::class);
-});
+        Route::resource('tracks', App\Http\Controllers\TracksController::class);
+        Route::resource('strands', App\Http\Controllers\StrandsController::class);
+    });
 
 require __DIR__.'/auth.php';
