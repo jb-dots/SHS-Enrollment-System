@@ -28,8 +28,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/admin/manage-users', [AdminDashboardController::class, 'manageUsers'])->name('admin.manage-users');
         Route::get('/admin/manage-tracks', [AdminDashboardController::class, 'manageTracks'])->name('admin.manage-tracks');
+        Route::get('/admin/archived-tracks', [AdminDashboardController::class, 'archivedTracks'])->name('admin.archived-tracks');
 
         Route::resource('tracks', App\Http\Controllers\TracksController::class);
+        Route::post('/tracks/{track}/archive', [App\Http\Controllers\TracksController::class, 'archive'])->name('tracks.archive');
         Route::resource('strands', App\Http\Controllers\StrandsController::class);
     });
 

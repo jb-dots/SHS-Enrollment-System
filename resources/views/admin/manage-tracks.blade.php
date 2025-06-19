@@ -104,6 +104,7 @@
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('admin.manage-users') }}">Manage Users</a></li>
             <li><a href="{{ route('admin.manage-tracks') }}" class="active">Manage Tracks</a></li>
+            <li><a href="{{ route('admin.archived-tracks') }}">Manage Archives</a></li>
             <li><a href="#">Manage Requirements</a></li>
             <li><a href="#">Manage Subjects</a></li>
             <li>
@@ -119,15 +120,17 @@
     </aside>
     <main>
         <h1>Manage Tracks</h1>
+        <a href="{{ route('tracks.create') }}" class="button">Create New Track</a>
         <table>
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>Strands</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($tracks as $track)
+                @foreach($tracks as $index => $track)
                 <tr>
                     <td>{{ $track['name'] }}</td>
                     <td>
@@ -136,6 +139,13 @@
                             <li>{{ $strand }}</li>
                             @endforeach
                         </ul>
+                    </td>
+                    <td>
+                        <a href="{{ route('tracks.edit', $index) }}" class="button" style="background-color: #4ade80; margin-right: 5px;">Edit</a>
+                        <form action="{{ route('tracks.archive', $index) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="button" style="background-color: #f87171;">Archive</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

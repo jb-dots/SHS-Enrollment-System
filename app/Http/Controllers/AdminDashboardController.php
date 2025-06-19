@@ -102,6 +102,7 @@ class AdminDashboardController extends Controller
                     'Science, Technology, Engineering, and Mathematics (STEM)',
                     'General Academic Strand (GAS)',
                 ],
+                'archived' => false,
             ],
             [
                 'name' => 'Technical-Vocational-Livelihood (TVL)',
@@ -111,6 +112,7 @@ class AdminDashboardController extends Controller
                     'Industrial Arts (IA)',
                     'Information and Communications Technology (ICT)',
                 ],
+                'archived' => false,
             ],
             [
                 'name' => 'Arts and Design Track',
@@ -118,9 +120,34 @@ class AdminDashboardController extends Controller
                     'Visual and Media Arts',
                     'Performative Arts',
                 ],
+                'archived' => false,
             ],
         ];
 
         return view('admin.manage-tracks', compact('tracks'));
+    }
+
+    public function archivedTracks()
+    {
+        $tracks = [
+            [
+                'name' => 'Archived Track 1',
+                'strands' => [
+                    'Archived Strand 1',
+                    'Archived Strand 2',
+                ],
+                'archived' => true,
+            ],
+            [
+                'name' => 'Archived Track 2',
+                'strands' => [
+                    'Archived Strand A',
+                    'Archived Strand B',
+                ],
+                'archived' => true,
+            ],
+        ];
+
+        return view('admin.archived-tracks', compact('tracks'));
     }
 }

@@ -15,6 +15,7 @@ class TracksController extends Controller
                 'Science, Technology, Engineering, and Mathematics (STEM)',
                 'General Academic Strand (GAS)',
             ],
+            'archived' => false,
         ],
         [
             'name' => 'Technical-Vocational-Livelihood (TVL)',
@@ -24,6 +25,7 @@ class TracksController extends Controller
                 'Industrial Arts (IA)',
                 'Information and Communications Technology (ICT)',
             ],
+            'archived' => false,
         ],
         [
             'name' => 'Arts and Design Track',
@@ -31,12 +33,15 @@ class TracksController extends Controller
                 'Visual and Media Arts',
                 'Performative Arts',
             ],
+            'archived' => false,
         ],
     ];
 
     public function index()
     {
-        $tracks = $this->tracks;
+        $tracks = array_filter($this->tracks, function ($track) {
+            return empty($track['archived']) || $track['archived'] === false;
+        });
         return view('tracks.index', compact('tracks'));
     }
 
@@ -98,5 +103,14 @@ class TracksController extends Controller
         }
         array_splice($this->tracks, $id, 1);
         return redirect()->route('tracks.index')->with('success', 'Track deleted successfully.');
+    }
+
+    public function archive($id)
+    {
+        if (!isset($this->tracks[$id])) {
+            abort(404);
+        }
+        $this->tracks[$id]['archived'] = true;
+        return redirect()->route('tracks.index')->with('success', 'Track archived successfully.');
     }
 }

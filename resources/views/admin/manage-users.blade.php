@@ -85,7 +85,8 @@
         <ul>
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('admin.manage-users') }}" class="active">Manage Users</a></li>
-            <li><a href="#">Manage Tracks</a></li>
+            <li><a href="{{ route('admin.manage-tracks') }}">Manage Tracks</a></li>
+            <li><a href="{{ route('admin.archived-tracks') }}">Manage Archives</a></li>
             <li><a href="#">Manage Requirements</a></li>
             <li><a href="#">Manage Subjects</a></li>
             <li>
