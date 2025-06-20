@@ -45,7 +45,7 @@ class TracksRepository
         return Session::get('tracks');
     }
 
-    private function saveTracksToSession($tracks)
+    public function saveTracksToSession($tracks)
     {
         Session::put('tracks', $tracks);
     }
@@ -91,5 +91,12 @@ class TracksRepository
         $tracks[$index]['archived'] = false;
         $this->saveTracksToSession($tracks);
         return true;
+    }
+
+    public function addTrack(array $track)
+    {
+        $tracks = $this->getTracksFromSession();
+        $tracks[] = $track;
+        $this->saveTracksToSession($tracks);
     }
 }

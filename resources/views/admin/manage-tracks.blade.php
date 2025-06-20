@@ -125,11 +125,11 @@
                 <tr>
                     <td>{{ $track['name'] }}</td>
                     <td>
-                        <ul>
-                            @foreach($track['strands'] as $strand)
-                            <li>{{ $strand }}</li>
-                            @endforeach
-                        </ul>
+                        @if(is_array($track['strands']))
+                            {{ implode(', ', array_map('e', $track['strands'])) }}
+                        @else
+                            {!! $track['strands'] !!}
+                        @endif
                     </td>
                     <td>
                         <a href="{{ route('tracks.edit', $index) }}" class="btn btn-success btn-sm me-2">Edit</a>

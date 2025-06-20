@@ -27,9 +27,22 @@ class TracksController extends Controller
 
     public function store(Request $request)
     {
-        // This method would need to be updated to add to the repository if persistence is implemented
-        // For now, just redirect back
-        return redirect()->route('tracks.index')->with('success', 'Track created successfully.');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'strands' => 'nullable|string',
+        ]);
+
+        $rawStrands = $request->input('strands', '');
+
+        $newTrack = [
+            'name' => $request->input('name'),
+            'strands' => $rawStrands,
+            'archived' => false,
+        ];
+
+        $this->tracksRepository->addTrack($newTrack);
+
+        return redirect()->route('admin.manage-tracks')->with('success', 'Track created successfully.');
     }
 
     public function edit($id)
@@ -44,9 +57,25 @@ class TracksController extends Controller
 
     public function update(Request $request, $id)
     {
-        // This method would need to be updated to update the repository if persistence is implemented
-        // For now, just redirect back
-        return redirect()->route('tracks.index')->with('success', 'Track updated successfully.');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'strands' => 'nullable|string',
+        ]);
+
+        $rawStrands = $request->input('strands', '');
+
+        $tracks = $this->tracksRepository->getActive();
+        if (!isset($tracks[$id])) {
+            abort(404);
+        }
+
+        $tracks[$id]['name'] = $request->input('name');
+        $tracks[$id]['strands'] = $rawStrands;
+
+        // Save updated tracks back to session
+        $this->tracksRepository->saveTracksToSession($tracks);
+
+        return redirect()->route('admin.manage-tracks')->with('success', 'Track updated successfully.');
     }
 
     public function destroy($id)
