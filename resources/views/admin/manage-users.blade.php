@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Manage Users - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,18 +17,22 @@
             width: 250px;
             background-color: #1f2937;
             color: white;
-            padding: 20px;
+            padding: 0 20px; /* Adjusted padding to remove top space */
             box-sizing: border-box;
+            height: 100vh; /* Ensure sidebar takes full height */
+            position: sticky;
+            top: 0;
         }
         aside h2 {
             font-size: 1.5em;
-            margin-bottom: 20px;
+            margin: 20px 0 20px 0; /* Reduced top margin to minimize wasted space */
             border-bottom: 1px solid #374151;
             padding-bottom: 10px;
         }
         aside ul {
             list-style: none;
             padding: 0;
+            margin-top: 0; /* Remove default margin */
         }
         aside ul li {
             margin-bottom: 15px;
@@ -48,34 +53,14 @@
             box-sizing: border-box;
         }
         h1 {
-            font-size: 2em;
             margin-bottom: 20px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 15px;
         }
-        thead {
-            background-color: #f9fafb;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        th {
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            font-size: 0.85em;
-        }
-        tr:last-child td {
-            border-bottom: none;
+        .table-responsive {
+            margin-bottom: 30px;
         }
     </style>
 </head>
@@ -101,53 +86,56 @@
         </ul>
     </aside>
     <main>
-        <h1>Manage Users</h1>
+        <h1 class="mb-4">Manage Users</h1>
 
         <h2>Students</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <!-- Add other student fields if needed -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($students as $student)
-                <tr>
-                <td>
-                    {{
-                        trim(
-                            $student->first_name . ' ' .
-                            ($student->middle_name ? $student->middle_name . ' ' : '') .
-                            $student->last_name
-                        ) ?: 'N/A'
-                    }}
-                </td>
-                <td>{{ $student->email ?? 'N/A' }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive mb-5">
+            <table class="table table-bordered table-hover shadow-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($students as $student)
+                    <tr>
+                        <td>
+                            {{
+                                trim(
+                                    $student->first_name . ' ' .
+                                    ($student->middle_name ? $student->middle_name . ' ' : '') .
+                                    $student->last_name
+                                ) ?: 'N/A'
+                            }}
+                        </td>
+                        <td>{{ $student->email ?? 'N/A' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         <h2>Teachers / Instructors</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <!-- Add other teacher fields if needed -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($teachers as $teacher)
-                <tr>
-                    <td>{{ $teacher->name }}</td>
-                    <td>{{ $teacher->email }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover shadow-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($teachers as $teacher)
+                    <tr>
+                        <td>{{ $teacher->name }}</td>
+                        <td>{{ $teacher->email }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

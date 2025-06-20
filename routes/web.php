@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('tracks', App\Http\Controllers\TracksController::class);
         Route::post('/tracks/{track}/archive', [App\Http\Controllers\TracksController::class, 'archive'])->name('tracks.archive');
+        Route::post('/tracks/{track}/restore', [App\Http\Controllers\TracksController::class, 'restore'])->name('tracks.restore');
         Route::resource('strands', App\Http\Controllers\StrandsController::class);
     });
 

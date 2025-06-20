@@ -6,42 +6,22 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Enrollment;
 use App\Models\Student;
+use App\Repositories\TracksRepository;
 
 class AdminDashboardController extends Controller
 {
+    protected $tracksRepository;
+
+    public function __construct(TracksRepository $tracksRepository)
+    {
+        $this->tracksRepository = $tracksRepository;
+    }
+
     public function index()
     {
         $totalUsers = User::count();
 
-        $tracks = [
-            [
-                'name' => 'Academic Track',
-                'strands' => [
-                    'Accountancy, Business and Management (ABM)',
-                    'Humanities and Social Sciences (HUMSS)',
-                    'Science, Technology, Engineering, and Mathematics (STEM)',
-                    'General Academic Strand (GAS)',
-                ],
-            ],
-            [
-                'name' => 'Technical-Vocational-Livelihood (TVL)',
-                'strands' => [
-                    'Agri-Fishery Arts (AFA)',
-                    'Home Economics (HE)',
-                    'Industrial Arts (IA)',
-                    'Information and Communications Technology (ICT)',
-                ],
-            ],
-            [
-                'name' => 'Arts and Design Track',
-                'strands' => [
-                    'Visual and Media Arts',
-                    'Performative Arts',
-                ],
-            ],
-        ];
-
-        $totalTracks = count($tracks);
+        $totalTracks = count($this->tracksRepository->getAll());
 
         $strands = [
             ['name' => 'Accountancy, Business and Management (ABM)', 'track' => 'Academic Track'],
@@ -93,61 +73,18 @@ class AdminDashboardController extends Controller
 
     public function manageTracks()
     {
-        $tracks = [
-            [
-                'name' => 'Academic Track',
-                'strands' => [
-                    'Accountancy, Business and Management (ABM)',
-                    'Humanities and Social Sciences (HUMSS)',
-                    'Science, Technology, Engineering, and Mathematics (STEM)',
-                    'General Academic Strand (GAS)',
-                ],
-                'archived' => false,
-            ],
-            [
-                'name' => 'Technical-Vocational-Livelihood (TVL)',
-                'strands' => [
-                    'Agri-Fishery Arts (AFA)',
-                    'Home Economics (HE)',
-                    'Industrial Arts (IA)',
-                    'Information and Communications Technology (ICT)',
-                ],
-                'archived' => false,
-            ],
-            [
-                'name' => 'Arts and Design Track',
-                'strands' => [
-                    'Visual and Media Arts',
-                    'Performative Arts',
-                ],
-                'archived' => false,
-            ],
-        ];
-
+        $tracks = $this->tracksRepository->getActive();
         return view('admin.manage-tracks', compact('tracks'));
     }
 
     public function archivedTracks()
     {
-        $tracks = [
-            [
-                'name' => 'Archived Track 1',
-                'strands' => [
-                    'Archived Strand 1',
-                    'Archived Strand 2',
-                ],
-                'archived' => true,
-            ],
-            [
-                'name' => 'Archived Track 2',
-                'strands' => [
-                    'Archived Strand A',
-                    'Archived Strand B',
-                ],
-                'archived' => true,
-            ],
-        ];
-
-        return view('admin.archived-tracks', compact('tracks'));
+        $archivedTracks = $this->tracksRepository->getArchived();
+        // Pass original indexes along with tracks
+        $tracksWithIndexes = [];
+        foreach ($archivedTracks as $index => $track) {
+            $tracksWithIndexes[] = ['index' => $index, 'track' => $track];
+        }
+        return view('admin.archived-tracks', ['tracks' => $tracksWithIndexes]);
     }
 }

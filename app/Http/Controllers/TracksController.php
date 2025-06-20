@@ -3,45 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Repositories\TracksRepository;
 
 class TracksController extends Controller
 {
-    private $tracks = [
-        [
-            'name' => 'Academic Track',
-            'strands' => [
-                'Accountancy, Business and Management (ABM)',
-                'Humanities and Social Sciences (HUMSS)',
-                'Science, Technology, Engineering, and Mathematics (STEM)',
-                'General Academic Strand (GAS)',
-            ],
-            'archived' => false,
-        ],
-        [
-            'name' => 'Technical-Vocational-Livelihood (TVL)',
-            'strands' => [
-                'Agri-Fishery Arts (AFA)',
-                'Home Economics (HE)',
-                'Industrial Arts (IA)',
-                'Information and Communications Technology (ICT)',
-            ],
-            'archived' => false,
-        ],
-        [
-            'name' => 'Arts and Design Track',
-            'strands' => [
-                'Visual and Media Arts',
-                'Performative Arts',
-            ],
-            'archived' => false,
-        ],
-    ];
+    protected $tracksRepository;
+
+    public function __construct(TracksRepository $tracksRepository)
+    {
+        $this->tracksRepository = $tracksRepository;
+    }
 
     public function index()
     {
-        $tracks = array_filter($this->tracks, function ($track) {
-            return empty($track['archived']) || $track['archived'] === false;
-        });
+        $tracks = $this->tracksRepository->getActive();
         return view('tracks.index', compact('tracks'));
     }
 
@@ -52,65 +27,50 @@ class TracksController extends Controller
 
     public function store(Request $request)
     {
-        // Validate and store the new track (for now, just simulate)
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'strands' => 'nullable|array',
-            'strands.*' => 'string|max:255',
-        ]);
-
-        // Add to tracks array (simulate database)
-        $this->tracks[] = [
-            'name' => $validated['name'],
-            'strands' => $validated['strands'] ?? [],
-        ];
-
+        // This method would need to be updated to add to the repository if persistence is implemented
+        // For now, just redirect back
         return redirect()->route('tracks.index')->with('success', 'Track created successfully.');
     }
 
     public function edit($id)
     {
-        if (!isset($this->tracks[$id])) {
+        $tracks = $this->tracksRepository->getActive();
+        if (!isset($tracks[$id])) {
             abort(404);
         }
-        $track = $this->tracks[$id];
+        $track = $tracks[$id];
         return view('tracks.edit', compact('track', 'id'));
     }
 
     public function update(Request $request, $id)
     {
-        if (!isset($this->tracks[$id])) {
-            abort(404);
-        }
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'strands' => 'nullable|array',
-            'strands.*' => 'string|max:255',
-        ]);
-
-        $this->tracks[$id] = [
-            'name' => $validated['name'],
-            'strands' => $validated['strands'] ?? [],
-        ];
-
+        // This method would need to be updated to update the repository if persistence is implemented
+        // For now, just redirect back
         return redirect()->route('tracks.index')->with('success', 'Track updated successfully.');
     }
 
     public function destroy($id)
     {
-        if (!isset($this->tracks[$id])) {
-            abort(404);
-        }
-        array_splice($this->tracks, $id, 1);
+        // This method would need to be updated to delete from the repository if persistence is implemented
+        // For now, just redirect back
         return redirect()->route('tracks.index')->with('success', 'Track deleted successfully.');
     }
 
     public function archive($id)
     {
-        if (!isset($this->tracks[$id])) {
+        $success = $this->tracksRepository->archive($id);
+        if (!$success) {
             abort(404);
         }
-        $this->tracks[$id]['archived'] = true;
-        return redirect()->route('tracks.index')->with('success', 'Track archived successfully.');
+        return redirect()->route('admin.archived-tracks')->with('success', 'Track archived successfully.');
+    }
+
+    public function restore($id)
+    {
+        $success = $this->tracksRepository->restore($id);
+        if (!$success) {
+            abort(404);
+        }
+        return redirect()->route('admin.manage-tracks')->with('success', 'Track restored successfully.');
     }
 }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Manage Tracks - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -82,18 +83,8 @@
             margin: 0;
             padding-left: 20px;
         }
-        a.button {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            background-color: #2563eb;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-        a.button:hover {
-            background-color: #1e40af;
+        .btn-create {
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -120,8 +111,8 @@
     </aside>
     <main>
         <h1>Manage Tracks</h1>
-        <a href="{{ route('tracks.create') }}" class="button">Create New Track</a>
-        <table>
+        <a href="{{ route('tracks.create') }}" class="btn btn-primary btn-create">Create New Track</a>
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -141,10 +132,10 @@
                         </ul>
                     </td>
                     <td>
-                        <a href="{{ route('tracks.edit', $index) }}" class="button" style="background-color: #4ade80; margin-right: 5px;">Edit</a>
-                        <form action="{{ route('tracks.archive', $index) }}" method="POST" style="display:inline;">
+                        <a href="{{ route('tracks.edit', $index) }}" class="btn btn-success btn-sm me-2">Edit</a>
+                        <form action="{{ route('tracks.archive', $index) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to archive this track?');">
                             @csrf
-                            <button type="submit" class="button" style="background-color: #f87171;">Archive</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Archive</button>
                         </form>
                     </td>
                 </tr>
@@ -152,5 +143,6 @@
             </tbody>
         </table>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

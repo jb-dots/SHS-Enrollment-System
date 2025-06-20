@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Archived Tracks - Admin Dashboard</title>
+    <title>Manage Archives - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,18 +17,22 @@
             width: 250px;
             background-color: #1f2937;
             color: white;
-            padding: 20px;
+            padding: 0 20px; /* Adjusted to remove top space */
             box-sizing: border-box;
+            height: 100vh; /* Ensure sidebar takes full height */
+            position: sticky;
+            top: 0;
         }
         aside h2 {
             font-size: 1.5em;
-            margin-bottom: 20px;
+            margin: 20px 0 20px 0; /* Reduced top margin to minimize wasted space */
             border-bottom: 1px solid #374151;
             padding-bottom: 10px;
         }
         aside ul {
             list-style: none;
             padding: 0;
+            margin-top: 0; /* Remove default margin */
         }
         aside ul li {
             margin-bottom: 15px;
@@ -52,59 +57,19 @@
             margin-bottom: 20px;
             color: #111827;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        .table-responsive {
             margin-bottom: 40px;
-        }
-        thead {
-            background-color: #f9fafb;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        th {
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            font-size: 0.85em;
-        }
-        tr:last-child td {
-            border-bottom: none;
-        }
-        ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-        a.button {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            background-color: #2563eb;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-        a.button:hover {
-            background-color: #1e40af;
         }
     </style>
 </head>
 <body>
     <aside>
-        <h2>Admin Dashboard</h2>
+        <h2>Admin Dashboard</h2> <!-- Changed from h1 to h2 for consistency -->
         <ul>
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('admin.manage-users') }}">Manage Users</a></li>
             <li><a href="{{ route('admin.manage-tracks') }}">Manage Tracks</a></li>
-            <li><a href="{{ route('admin.archived-tracks') }}" class="active">Archived Tracks</a></li>
+            <li><a href="{{ route('admin.archived-tracks') }}" class="active">Manage Archives</a></li>
             <li><a href="#">Manage Requirements</a></li>
             <li><a href="#">Manage Subjects</a></li>
             <li>
@@ -119,29 +84,38 @@
         </ul>
     </aside>
     <main>
-        <h1>Archived Tracks</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Strands</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($tracks as $track)
-                <tr>
-                    <td>{{ $track['name'] }}</td>
-                    <td>
-                        <ul>
-                            @foreach($track['strands'] as $strand)
-                            <li>{{ $strand }}</li>
-                            @endforeach
-                        </ul>
-                    </td>
-                </tr>
+        <h1 class="mb-4">Archived Tracks</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover shadow-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Strands</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($tracks as $item)
+                    <tr>
+                        <td>{{ $item['track']['name'] }}</td>
+                        <td>
+                            <ul class="list-unstyled">
+                @foreach($item['track']['strands'] as $strand)
+                <li>{{ $strand }}</li>
                 @endforeach
-            </tbody>
-        </table>
+            </ul>
+        </td>
+        <td>
+            <form action="{{ route('tracks.restore', $item['index']) }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn btn-sm btn-primary">Restore</button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+                </tbody>
+            </table>
+        </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

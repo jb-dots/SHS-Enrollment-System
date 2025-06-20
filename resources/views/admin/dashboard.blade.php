@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,7 +40,7 @@
             padding: 10px;
             border-radius: 4px;
         }
-        aside ul li a:hover {
+        aside ul li a.active, aside ul li a:hover {
             background-color: #374151;
         }
         main {
@@ -47,65 +48,10 @@
             padding: 30px;
             box-sizing: border-box;
         }
-        h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
         .welcome {
             margin-bottom: 30px;
             font-size: 1.1em;
             color: #4b5563;
-        }
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            flex: 1 1 200px;
-        }
-        .card h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.1em;
-            color: #374151;
-        }
-        .card p {
-            font-size: 1.8em;
-            margin: 0;
-            color: #111827;
-        }
-        .card .pending {
-            color: #dc2626;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        thead {
-            background-color: #f9fafb;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        th {
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            font-size: 0.85em;
-        }
-        tr:last-child td {
-            border-bottom: none;
         }
     </style>
 </head>
@@ -113,13 +59,14 @@
     <aside>
         <h2>Admin Dashboard</h2>
         <ul>
-            <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ route('admin.dashboard') }}" class="active">Dashboard</a></li>
             <li><a href="{{ route('admin.manage-users') }}">Manage Users</a></li>
             <li><a href="{{ route('admin.manage-tracks') }}">Manage Tracks</a></li>
             <li><a href="{{ route('admin.archived-tracks') }}">Manage Archives</a></li>
             <li><a href="#">Manage Requirements</a></li>
             <li><a href="#">Manage Subjects</a></li>
-            <li><a href="{{ route('logout') }}"
+            <li>
+                <a href="{{ route('logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                    Logout
                 </a>
@@ -130,51 +77,73 @@
         </ul>
     </aside>
     <main>
-        <h1>Admin Dashboard</h1>
+        <h1 class="mb-3">Admin Dashboard</h1>
         <p class="welcome">Welcome, Admin User!</p>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Total Users</h3>
-                <p><?php echo e($totalUsers); ?></p>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title fs-6 text-muted">Total Users</h3>
+                        <p class="card-text fs-3"><?php echo e($totalUsers); ?></p>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Total Tracks</h3>
-                <p><?php echo e($totalTracks); ?></p>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title fs-6 text-muted">Total Tracks</h3>
+                        <p class="card-text fs-3"><?php echo e($totalTracks); ?></p>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Total Strands</h3>
-                <p><?php echo e($totalStrands); ?></p>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title fs-6 text-muted">Total Strands</h3>
+                        <p class="card-text fs-3"><?php echo e($totalStrands); ?></p>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Total Subjects</h3>
-                <p><?php echo e($totalSubjects); ?></p>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title fs-6 text-muted">Total Subjects</h3>
+                        <p class="card-text fs-3"><?php echo e($totalSubjects); ?></p>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Pending Requirements</h3>
-                <p class="pending"><?php echo e($pendingRequirements); ?></p>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title fs-6 text-muted">Pending Requirements</h3>
+                        <p class="card-text fs-3 text-danger"><?php echo e($pendingRequirements); ?></p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <h2>Students per Strand</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Strand</th>
-                    <th>Track</th>
-                    <th>Students</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach($studentsPerStrand as $strand): ?>
-                <tr>
-                    <td><?php echo e($strand['strand']); ?></td>
-                    <td><?php echo e($strand['track']); ?></td>
-                    <td><?php echo e($strand['students']); ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </main>
-</body>
+        <h2 class="mb-3">Students per Strand</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover shadow-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Strand</th>
+                        <th>Track</th>
+                        <th>Students</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($studentsPerStrand as $strand)
+                    <tr>
+                        <td>{{ $strand['strand'] }}</td>
+                        <td>{{ $strand['track'] }}</td>
+                        <td>{{ $strand['students'] }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

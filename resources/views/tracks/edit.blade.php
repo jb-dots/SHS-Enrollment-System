@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Track</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+        .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Edit Track</h1>
+        <form action="{{ route('tracks.update', $id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="mb-3">
+                <label for="name" class="form-label">Track Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $track['name']) }}" required>
+            </div>
+                <div class="mb-3">
+                    <label for="strands" class="form-label">Strands (comma separated)</label>
+                    <textarea id="strands" name="strands" class="form-control" rows="5">{{ old('strands', implode(', ', $track['strands'])) }}</textarea>
+                </div>
+            <button type="submit" class="btn btn-success">Update Track</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
