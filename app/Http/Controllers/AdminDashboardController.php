@@ -88,4 +88,10 @@ class AdminDashboardController extends Controller
         }
         return view('admin.archived-tracks', ['tracks' => $tracksWithIndexes]);
     }
+
+    public function manageStrands()
+    {
+        $strands = \App\Models\Strand::all();
+        return view('admin.manage-strands', compact('strands'));
+    }
 }

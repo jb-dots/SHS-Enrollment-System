@@ -63,6 +63,7 @@
             <li><a href="{{ route('admin.manage-users') }}">Manage Users</a></li>
             <li><a href="{{ route('admin.manage-tracks') }}">Manage Tracks</a></li>
             <li><a href="{{ route('admin.archived-tracks') }}">Manage Archives</a></li>
+            <li><a href="{{ route('admin.manage-strands') }}">Manage Strands</a></li>
             <li><a href="#">Manage Requirements</a></li>
             <li><a href="#">Manage Subjects</a></li>
             <li>
