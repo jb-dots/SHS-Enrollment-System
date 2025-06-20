@@ -98,20 +98,26 @@
                     <tr>
                         <td>{{ $item['track']['name'] }}</td>
                         <td>
-                            <ul class="list-unstyled">
-                @foreach($item['track']['strands'] as $strand)
-                <li>{{ $strand }}</li>
-                @endforeach
-            </ul>
-        </td>
-        <td>
-            <form action="{{ route('tracks.restore', $item['index']) }}" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-primary">Restore</button>
-            </form>
-        </td>
-    </tr>
-    @endforeach
+                            @if(is_string($item['track']['strands']))
+                                {!! $item['track']['strands'] !!}
+                            @elseif(is_array($item['track']['strands']))
+                                <ul class="list-unstyled">
+                                    @foreach($item['track']['strands'] as $strand)
+                                        <li>{{ $strand }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                {{ $item['track']['strands'] }}
+                            @endif
+                        </td>
+                        <td>
+                            <form action="{{ route('tracks.restore', $item['id']) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-primary">Restore</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

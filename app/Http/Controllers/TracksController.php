@@ -27,79 +27,59 @@ class TracksController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'strands' => 'nullable|string',
         ]);
 
-        $rawStrands = $request->input('strands', '');
-
-        $newTrack = [
-            'name' => $request->input('name'),
-            'strands' => $rawStrands,
+        // Save strands as raw HTML string from TinyMCE
+        $this->tracksRepository->addTrack([
+            'name' => $validated['name'],
+            'strands' => $validated['strands'] ?? '',
             'archived' => false,
-        ];
-
-        $this->tracksRepository->addTrack($newTrack);
+        ]);
 
         return redirect()->route('admin.manage-tracks')->with('success', 'Track created successfully.');
     }
 
     public function edit($id)
     {
-        $tracks = $this->tracksRepository->getActive();
-        if (!isset($tracks[$id])) {
+        $track = $this->tracksRepository->getAll()->find($id);
+        if (!$track) {
             abort(404);
         }
-        $track = $tracks[$id];
         return view('tracks.edit', compact('track', 'id'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $track = $this->tracksRepository->getAll()->find($id);
+        if (!$track) {
+            abort(404);
+        }
+
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'strands' => 'nullable|string',
         ]);
 
-        $rawStrands = $request->input('strands', '');
-
-        $tracks = $this->tracksRepository->getActive();
-        if (!isset($tracks[$id])) {
-            abort(404);
-        }
-
-        $tracks[$id]['name'] = $request->input('name');
-        $tracks[$id]['strands'] = $rawStrands;
-
-        // Save updated tracks back to session
-        $this->tracksRepository->saveTracksToSession($tracks);
+        // Save strands as raw HTML string from TinyMCE
+        $track->name = $validated['name'];
+        $track->strands = $validated['strands'] ?? '';
+        $track->save();
 
         return redirect()->route('admin.manage-tracks')->with('success', 'Track updated successfully.');
     }
 
-    public function destroy($id)
-    {
-        // This method would need to be updated to delete from the repository if persistence is implemented
-        // For now, just redirect back
-        return redirect()->route('tracks.index')->with('success', 'Track deleted successfully.');
-    }
-
     public function archive($id)
     {
-        $success = $this->tracksRepository->archive($id);
-        if (!$success) {
-            abort(404);
-        }
+        $this->tracksRepository->archive($id);
         return redirect()->route('admin.archived-tracks')->with('success', 'Track archived successfully.');
     }
 
     public function restore($id)
     {
-        $success = $this->tracksRepository->restore($id);
-        if (!$success) {
-            abort(404);
-        }
-        return redirect()->route('admin.manage-tracks')->with('success', 'Track restored successfully.');
+        $this->tracksRepository->restore($id);
+        return redirect()->route('admin.archived-tracks')->with('success', 'Track restored successfully.');
     }
 }

@@ -80,10 +80,11 @@ class AdminDashboardController extends Controller
     public function archivedTracks()
     {
         $archivedTracks = $this->tracksRepository->getArchived();
+
         // Pass original indexes along with tracks
         $tracksWithIndexes = [];
         foreach ($archivedTracks as $index => $track) {
-            $tracksWithIndexes[] = ['index' => $index, 'track' => $track];
+            $tracksWithIndexes[] = ['id' => $track->id, 'track' => $track];
         }
         return view('admin.archived-tracks', ['tracks' => $tracksWithIndexes]);
     }

@@ -125,15 +125,20 @@
                 <tr>
                     <td>{{ $track['name'] }}</td>
                     <td>
-                        @if(is_array($track['strands']))
-                            {{ implode(', ', array_map('e', $track['strands'])) }}
-                        @else
-                            {!! $track['strands'] !!}
-                        @endif
+                        @php
+                            $strands = $track['strands'];
+                            if (is_string($strands) && (substr($strands, 0, 1) === '[' || substr($strands, 0, 1) === '{')) {
+                                $decoded = json_decode($strands, true);
+                                if (json_last_error() === JSON_ERROR_NONE) {
+                                    $strands = implode('', $decoded);
+                                }
+                            }
+                        @endphp
+                        {!! $strands !!}
                     </td>
                     <td>
-                        <a href="{{ route('tracks.edit', $index) }}" class="btn btn-success btn-sm me-2">Edit</a>
-                        <form action="{{ route('tracks.archive', $index) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to archive this track?');">
+                        <a href="{{ route('tracks.edit', $track['id']) }}" class="btn btn-success btn-sm me-2">Edit</a>
+                        <form action="{{ route('tracks.archive', $track['id']) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to archive this track?');">
                             @csrf
                             <button type="submit" class="btn btn-danger btn-sm">Archive</button>
                         </form>

@@ -46,7 +46,7 @@
 <body>
     <div class="form-container">
         <h1>Edit Track</h1>
-        <form action="{{ route('tracks.update', $id) }}" method="POST">
+        <form action="{{ route('tracks.update', $track['id']) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">
@@ -54,8 +54,8 @@
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $track['name']) }}" required>
             </div>
                 <div class="mb-3">
-                    <label for="strands" class="form-label">Strands (comma separated)</label>
-                    <textarea id="strands" name="strands" class="form-control" rows="5">{{ old('strands', implode(', ', $track['strands'])) }}</textarea>
+                    <label for="strands" class="form-label">Strands</label>
+                    <textarea id="strands" name="strands" class="form-control" rows="5">{!! old('strands', $track['strands']) !!}</textarea>
                 </div>
             <button type="submit" class="btn btn-success">Update Track</button>
         </form>
