@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>Edit Track</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tiny.cloud/1/mkce0t2ptbzww5yzig0hxcbu1b6x9y2ho6j09l4q71599tjg/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+      tinymce.init({
+        selector: '#strands',
+        menubar: false,
+        plugins: 'lists link',
+        toolbar: 'undo redo | bold italic underline | bullist numlist | link',
+        branding: false
+      });
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
